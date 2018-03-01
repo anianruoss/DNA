@@ -1,60 +1,84 @@
 #include <iostream>
 #include <vector>
-// #include "tests.h"
+
+
+void print(const std::vector<std::vector<int>> &a) {
+    size_t n = a.size();
+    size_t m = a[0].size();
+
+    for (int i = m-1; i >= 0; --i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << a[j][i] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 
 class PrefixSum {
-  private:
-    std::vector<std::vector<int>> matrix;
-    int rows = matrix.size();
-    int columns = matrix[0].size();
-
   public:
-    PrefixSum(const std::vector<std::vector<int>>& a) : matrix(a) {
-        for (int n = 1; n < rows; ++n) {
-            matrix[n][0] = matrix[n][0] + matrix[n-1][0];
-        }
+    PrefixSum(const std::vector<std::vector<int> >& a) : pSum(a) {
+        if (a.size() == 0) return;
 
-        for (int m = 1; m < columns; ++m) {
-            matrix[0][m] = matrix[0][m] + matrix[0][m-1];
-        }
+        size_t n = a.size();
+        size_t m = a[0].size();
 
-        for (int n = 1; n < rows; ++n) {
-            for (int m = 1; m < columns; ++m) {
-                matrix[n][m] += matrix[n-1][m] + matrix[n][m-1] - matrix[n-1][m-1];
-            }
-        }
+        std::cout << "Original:" << std::endl;
+        print(pSum);
+
+        std::cout << "Horizontal Summation:" << std::endl;
+        for(size_t i=1; i<n; i++)
+            pSum[i][0] += pSum[i-1][0];
+        print(pSum);
+
+        std::cout << "Vertical Summation:" << std::endl;
+        for(size_t j=1; j<m; j++)
+            pSum[0][j] += pSum[0][j-1];
+        print(pSum);
+
+        std::cout << "Quadratic Summation:" << std::endl;
+        for(size_t i=1; i<n; i++)
+            for(size_t j=1; j<m; j++)
+                pSum[i][j] += (pSum[i-1][j] + pSum[i][j-1] - pSum[i-1][j-1]);
+        print(pSum);
     }
 
-    int sum (int x0, int x1, int y0, int y1) {
-        if (x0 == 0 && y0 == 0) {
-            return matrix[x1][y1];
-        } else if (x0 == 0) {
-            return matrix[x1][y1] - matrix[x1][y0-1];
-        } else if (y0 == 0) {
-            return matrix[x1][y1] - matrix[x0-1][y1];
-        } else {
-            return matrix[x1][y1] - matrix[x1][y0-1] - matrix[x0-1][y1] + matrix[x0-1][y0-1];
-        }
+    // Pre: 0 <= x0 <= x1 < n and 0 <= y0 <= y1 < m
+    int sum(size_t x0, size_t x1, size_t y0, size_t y1) {
+        int num =                      pSum[x1  ][y1  ];
+        int a   = (y0 > 0)           ? pSum[x1  ][y0-1] : 0;
+        int b   = (x0 > 0)           ? pSum[x0-1][y1  ] : 0;
+        int c   = (y0 > 0 && x0 > 0) ? pSum[x0-1][y0-1] : 0;
+
+        return (num - a - b + c);
     }
+
+  private:
+    std::vector<std::vector<int>> pSum;
 };
 
+
 int main() {
-    int rows, columns;
-    std::cin >> rows >> columns;
+    size_t n, m, x0, x1, y0, y1;
 
-    std::vector<std::vector<int>> matrix (rows, std::vector<int> (columns, 0));
-    for (int n = 0; n < rows; ++n) {
-        for (int m = 0; m < columns; ++m) {
-            std::cin >> matrix[n][m];
-        }
-    }
+    std::cin >> n;
+    std::cin >> m;
 
-    int x0, x1, y0, y1;
-    std::cin >> x0 >> x1 >> y0 >> y1;
+    std::vector<std::vector<int>> a(n, std::vector<int>(m));
 
-    PrefixSum psum(matrix);
-    std::cout << psum.sum(x0,x1,y0,y1) << std::endl;
+    for(size_t i = 0; i < n; ++i)
+        for(size_t j = 0; j < m; ++j)
+            std::cin >> a[i][j];
+    std::cout << std::endl;
+
+    std::cin >> x0;
+    std::cin >> x1;
+    std::cin >> y0;
+    std::cin >> y1;
+
+    PrefixSum prefixSum(a);
+    std::cout << "Sum = " << prefixSum.sum(x0, x1, y0, y1) << std::endl;
 
     return 0;
 }
