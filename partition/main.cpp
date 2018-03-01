@@ -23,8 +23,8 @@ int main() {
     std::cin >> n;
 
     std::cout << "Array:" << std::endl;
-
     int array[n];
+
     for (int i = 0; i < n; ++i) {
         std::cin >> array[i];
     }
