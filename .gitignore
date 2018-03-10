@@ -30,5 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Compiled code
 bin/
+build/
+
+# JetBrains files
+.idea/
 
