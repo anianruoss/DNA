@@ -67,7 +67,7 @@ int main() {
 
     // Lexicographically Sort by Age and Cleverness (Ascending)
     std::sort(people.begin(), people.end(), [](Person a, Person b) {
-        return a.age < b.age || (a.age == b.age && a.clever < b.clever);
+        return a.age < b.age || (a.age == b.age && a.clever <= b.clever);
     });
     print(people, "Age and Cleverness");
 
