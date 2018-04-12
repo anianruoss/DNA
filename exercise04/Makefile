@@ -1,8 +1,7 @@
-PROJNAME := randomized-skiplist
+PROJNAME := randomized-skip-list
 
 CPP := g++
-#CPP := clang++
-CFLAGS := -Wall -std=c++14
+CFLAGS := -std=c++14 -Wall -Wextra -Wpedantic
 LFLAGS := -lstdc++
 
 ifeq (1,${DEBUG})
@@ -37,3 +36,4 @@ clean:
 
 dirs:
 	mkdir -p bin/obj ${OUTDIR}
+
