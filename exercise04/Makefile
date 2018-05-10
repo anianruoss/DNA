@@ -1,7 +1,7 @@
 PROJNAME := randomized-skip-list
 
 CPP := g++
-CFLAGS := -std=c++14 -Wall -Wextra -Wpedantic
+CFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 LFLAGS := -lstdc++
 
 ifeq (1,${DEBUG})
