@@ -1,4 +1,4 @@
-PROJNAME := sliding-hash-subarray
+PROJNAME := union-find
 
 CPP := g++
 CFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
