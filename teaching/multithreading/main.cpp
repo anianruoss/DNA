@@ -17,14 +17,16 @@ void serialScalarProduct(Iterator beg1, Iterator end1,
 
     assert((end1 - beg1) == (end2 - beg2));
 
+    int tmp = 0;
+
     while (beg1 != end1) {
-        {
-            std::lock_guard<std::mutex> guard(m);
-            result += *beg1 * *beg2;
-        }
+        tmp += *beg1 * *beg2;
         ++beg1;
         ++beg2;
     }
+
+    std::lock_guard<std::mutex> guard(m);
+    result += tmp;
 }
 
 void parallelScalarProduct(Iterator beg1, Iterator end1,
