@@ -101,26 +101,6 @@ void mergesort_par(std::vector<int> &v) {
     merge(v, 0, partSize-1, n-1);
 }
 
-void mergesort_par_recursion( std::vector<int> & v, int cutoff, int l, int r) {
-    if (r-l < cutoff) {
-        mergesort(v, l, r);
-    } else {
-        int m = (l+r) / 2;
-        std::thread t (mergesort_par_recursion, std::ref(v), cutoff, l, m);
-        // avoid forking another thread
-        mergesort_par_recursion(v, cutoff, m+1, r);
-        t.join();
-        merge(v, l, m, r);
-    }
-}
-
-void mergesort_par_rec(std::vector<int> &v) {
-    const int nThreads = std::thread::hardware_concurrency();
-    const size_t sz = v.size();
-    size_t cutoff = sz / nThreads;
-    mergesort_par_recursion(v, cutoff, 0, sz-1);
-}
-
 
 int main() {
 
