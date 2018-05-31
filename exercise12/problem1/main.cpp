@@ -20,7 +20,7 @@ class Item {
 
     void add_rating(int stars) {
         std::lock_guard<std::recursive_mutex> guard(m);
-        avg_rating = (avg_rating * ratings + stars) / (ratings + 1);
+        avg_rating = (avg_rating * ratings + stars) / (ratings + 1.);
         ++ratings;
     }
 
